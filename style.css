@@ -1,0 +1,105 @@
+:root{
+  --bg:#f5f7fa;
+  --brand:#4caf50;
+  --ink:#333;
+  --muted:#777;
+  --card-bg:#ffffff;
+  --line:#ddd;
+}
+
+body{
+  font-family: Arial, sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+header{
+  background:var(--brand);
+  color:#fff;
+  text-align:center;
+  padding:1rem 0;
+  box-shadow:0 2px 4px rgba(0,0,0,.1);
+}
+
+main{
+  flex:1;
+  max-width:800px;
+  margin:2rem auto;
+  padding:0 1rem;
+}
+
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:1.5rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.muted{color:var(--muted)}
+
+.search input{
+  width:100%;
+  padding:.6rem .9rem;
+  border:1px solid var(--line);
+  border-radius:8px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+thead th{
+  background:#f9fafb;
+  padding:.75rem;
+  border-bottom:1px solid var(--line);
+}
+
+tbody td{
+  padding:.75rem;
+  border-bottom:1px solid var(--line);
+}
+
+tbody tr:hover{
+  background:#fafafa;
+}
+
+.badge{
+  border:1px solid var(--line);
+  padding:.2rem .5rem;
+  border-radius:999px;
+  font-size:.8rem;
+}
+
+.pagination{
+  display:flex;
+  justify-content:center;
+  margin-top:1rem;
+  gap:.4rem;
+}
+
+.pagination button{
+  padding:.45rem .7rem;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  cursor:pointer;
+}
+
+.pagination .active{
+  background:var(--brand);
+  color:#fff;
+  border-color:var(--brand);
+}
+
+footer{
+  text-align:center;
+  padding:1rem;
+  color:var(--muted);
+  border-top:1px solid var(--line);
+}
