@@ -24,3 +24,7 @@ Visualización de Lista: Muestra una lista de elementos de manera clara y organi
 Funcionalidad de Filtro: Permite a los usuarios filtrar la lista de elementos en función de múltiples criterios (ej: por nombre, estado, categoría, etc.), mejorando la experiencia de búsqueda de información específica.
 
 Paginación: Implementa paginación para manejar grandes volúmenes de datos de forma eficiente, limitando la cantidad de elementos mostrados por página y ofreciendo navegación entre ellas.
+
+Mencionar si se usó GitHub Copilot y qué sugerencias se aceptaron.
+
+utilizamos github copilot para la revisión del código generado por GitHub Copilot con el propósito de evaluar su calidad y funcionamiento. Analizo la estructura del programa, la claridad en la nomenclatura de variables y funciones, así como la coherencia lógica de las instrucciones. También verifico el manejo de errores, la eficiencia del algoritmo y el cumplimiento de los objetivos planteados.
