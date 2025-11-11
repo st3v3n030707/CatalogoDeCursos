@@ -1,61 +1,139 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catalogo De Cursos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catálogo de Cursos</title>
 
-        header {
-            background-color: #007bff;
-            color: white;
-            width: 100%;
-            text-align: center;
-            padding: 1rem 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        main {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        footer {
-            position: absolute;
-            bottom: 1rem;
-            font-size: 0.9rem;
-            color: #555;
-        }
-    </style>
+  <!-- Vinculación del archivo CSS (IMPORTANTE) -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>prueba de catalogo de cursos</h1>
-    </header>
+  <header>
+    <h1>Prueba de catálogo de cursos</h1>
+  </header>
 
-    <main>
-        <h2>Versión inicial (index.html)</h2>
-        <p>Creado por <strong>Steven Flores</strong></p>
-        <p>Este archivo se ejecuta correctamente en el navegador sin errores.</p>
-    </main>
+  <main>
+    <section class="card" aria-labelledby="titulo-lista">
+      <h2 id="titulo-lista">Versión con datos + filtro</h2>
 
-    <footer>
-        <p>© 2025 - Universidad Americana (UAM)</p>
-    </footer>
+      <p class="muted">
+        Creado por <strong>Chester Arguello</strong>.
+      </p>
 
-    <!-- 📝 Documentación interna:
-         Este esqueleto fue creado manualmente con un poco de ayuda de ChatGPT.
-         No se utilizó GitHub Copilot para la generación de este código. -->
+      <div class="toolbar">
+        <label class="search" for="q">
+          <input id="q" type="search" placeholder="Buscar por nombre o área (ej. ‘negocios’, ‘fotografía’)">
+        </label>
+        <div class="meta muted"><span id="count">0</span> resultado(s)</div>
+      </div>
+
+      <div style="overflow:auto;">
+        <table role="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Área</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <nav class="pagination" id="pager"></nav>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 - Universidad Americana (UAM) — Creado por <strong>Chester Argüello</strong>.</p>
+  </footer>
+
+  <script>
+    const courses = [
+      { id: 101, name: "Introducción a Robótica", area: "Ingeniería" },
+      { id: 102, name: "Marketing Digital", area: "Negocios" },
+      { id: 201, name: "Fotografía Creativa", area: "Arte" },
+      { id: 301, name: "Psicología del Comportamiento", area: "Ciencias Sociales" },
+      { id: 401, name: "Energías Renovables", area: "Medioambiente" },
+    ];
+
+    const PAGE_SIZE = 3;
+    let query = "";
+    let currentPage = 1;
+
+    const $input = document.getElementById("q");
+    const $rows  = document.getElementById("rows");
+    const $pager = document.getElementById("pager");
+    const $count = document.getElementById("count");
+
+    function normalize(s){
+      return s.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu,"");
+    }
+
+    function getFiltered(){
+      if(!query) return [...courses];
+      const q = normalize(query);
+      return courses.filter(c =>
+        normalize(c.name).includes(q) || normalize(c.area).includes(q)
+      );
+    }
+
+    function render(){
+      const filtered = getFiltered();
+      const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+      if(currentPage > totalPages) currentPage = totalPages;
+
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const pageItems = filtered.slice(start, start + PAGE_SIZE);
+
+      $rows.innerHTML = pageItems.length
+        ? pageItems.map(c => `
+          <tr>
+            <td><span class="badge">${c.id}</span></td>
+            <td>${c.name}</td>
+            <td>${c.area}</td>
+          </tr>
+        `).join("")
+        : `<tr><td colspan="3" style="text-align:center; padding:1rem;">No se encontraron cursos.</td></tr>`;
+
+      $count.textContent = filtered.length;
+
+      $pager.innerHTML = "";
+      const prev = makeBtn("«", () => goTo(currentPage - 1), currentPage === 1);
+      $pager.appendChild(prev);
+
+      for(let i=1;i<=totalPages;i++){
+        const b = makeBtn(i, () => goTo(i));
+        if(i === currentPage) b.classList.add("active");
+        $pager.appendChild(b);
+      }
+
+      const next = makeBtn("»", () => goTo(currentPage + 1), currentPage === totalPages);
+      $pager.appendChild(next);
+    }
+
+    function makeBtn(label,onClick,disabled=false){
+      const b = document.createElement("button");
+      b.textContent = label;
+      if(disabled) b.disabled = true;
+      b.addEventListener("click", onClick);
+      return b;
+    }
+
+    function goTo(page){
+      currentPage = page;
+      render();
+    }
+
+    $input.addEventListener("input", () => {
+      query = $input.value.trim();
+      currentPage = 1;
+      render();
+    });
+
+    render();
+  </script>
+
 </body>
 </html>
